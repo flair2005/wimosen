@@ -30,5 +30,5 @@ def fetch(os_type):
     if os_type is 'osx':
         #os.system('./shell/osxRSSI.sh') #mac osx
         com = Command("./shell/osxRSSI.sh").run()
-        print 'in pyton' + com.output
+        print 'I am in pyton' + com.output
         #print com.error
