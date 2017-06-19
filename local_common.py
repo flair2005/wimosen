@@ -40,10 +40,10 @@ id_ = 0
 def debugobj():
     global samples
     print "length----------------: ",len(samples)
-    #for obj in samples:
-        #print "id: ", obj.id_
-        #print "rssi: ", obj.rssi
-        #print "label: ", obj.label
+    for obj in samples:
+        print "id: ", obj.id_
+        print "rssi: ", obj.rssi
+        print "label: ", obj.label
 
 def fetch(os_type):
     if os_type is 'osx':
@@ -58,7 +58,7 @@ def fetch(os_type):
              if(len(samples) < pa.bachsize):
                 id_ = id_ + 1
                 samples.append(Sample(int(id_), int(rssi), int(label)))
-                debugobj()
+                #debugobj()
              else:
                 del samples[:]
         except RuntimeError:
