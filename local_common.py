@@ -35,13 +35,15 @@ class Sample(object):
 
 samples = []
 id_ = 0
+
 #test function for object vector
 def debugobj():
     global samples
-    for obj in samples:
-        print "id: ", obj.id_
-        print " rssi: ", obj.rssi
-        print " label: ", obj.label
+    print "length----------------: ",len(samples)
+    #for obj in samples:
+        #print "id: ", obj.id_
+        #print "rssi: ", obj.rssi
+        #print "label: ", obj.label
 
 def fetch(os_type):
     if os_type is 'osx':
@@ -51,10 +53,14 @@ def fetch(os_type):
              rssi = com.output.replace('agrCtlRSSI:', '')
              label = 1;  #todo label generator
              global id_
-             id_ = id_ + 1
              global samples
-             samples.append(Sample(int(id_), int(rssi), int(label)))
-             debugobj()
+
+             if(len(samples) < pa.bachsize):
+                id_ = id_ + 1
+                samples.append(Sample(int(id_), int(rssi), int(label)))
+                debugobj()
+             else:
+                del samples[:]
         except RuntimeError:
             print "input batch overload!\n"
 
