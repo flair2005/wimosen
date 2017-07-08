@@ -1,42 +1,36 @@
-"""
-author: Jake Vanderplas
-email: vanderplas@astro.washington.edu
-website: http://jakevdp.github.com
-license: BSD
-"""
-
+import matplotlib.pyplot as plt
+import time
+import random
+import statistics as st
+import local_common as lc
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import animation
+import params as pa
+from collections import deque
 
-# First set up the figure, the axis, and the plot element we want to animate
-fig = plt.figure()
-ax = plt.axes(xlim=(0, 2), ylim=(-2, 2))
-line, = ax.plot([], [], lw=2)
 
-# initialization function: plot the background of each frame
-def init():
-    line.set_data([], [])
-    return line,
+v1 = deque([0]*100)
+plt.subplot(211)
+plt.ylim([pa.minrssi,pa.maxrssi])
+plt.ion()
+line1, = plt.plot(v1)
+plt.show(block=False)
+plt.plot()
 
-# animation function.  This is called sequentially
-def animate(i):
-    print(i)
-    x = np.linspace(0, 2, 1000)
-    #y = np.sin(2 * np.pi * (x - 0.01 * i))
-    y = x * 0.01 * i;
-    line.set_data(x, y)
-    return line,
+def plot_data(value1):
+    plt.subplot(211)
+    plt.title('%f' % value1)
+    v1.appendleft(value1)
+    datatoplot = v1.pop()
+    print(v1)
+    print(datatoplot)
+    line1.set_ydata(v1)
 
-# call the animator.  blit=True means only re-draw the parts that have changed.
-anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=1, interval=20, blit=True)
+    plt.draw()
+    plt.pause(0.0001)
 
-# save the animation as an mp4.  This requires ffmpeg or mencoder to be
-# installed.  The extra_args ensure that the x264 codec is used, so that
-# the video can be embedded in html5.  You may need to adjust this for
-# your system: for more information, see
-# http://matplotlib.sourceforge.net/api/animation_api.html
-#anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
 
-plt.show()
+if __name__=='__main__':
+
+    while pa.run:
+        plot_data(lc.fetch().rssi)
+        time.sleep(pa.delay)

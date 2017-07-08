@@ -1,7 +1,10 @@
 import time
 import local_common as lc
 import params as pa
+import visualize as viz
+
+#viz.initvis()
 
 while pa.run:
     time.sleep(pa.delay) #100ms 0.01
-    lc.fetch(pa.os_type)
+    ret =  lc.fetch().rssi

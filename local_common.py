@@ -36,34 +36,14 @@ class Sample(object):
 samples = []
 id_ = 0
 
-#test function for object vector
-def debugobj():
-    global samples
-    print "length----------------: ",len(samples)
-    for obj in samples:
-        print "id: ", obj.id_
-        print "rssi: ", obj.rssi
-        print "label: ", obj.label
-
-def fetch(os_type):
-    if os_type is 'osx':
+def fetch():
+    if pa.os_type is 'osx':
         #os.system('./shell/osxRSSI.sh') #mac osx
-        try:
-             com = Command("./shell/osxRSSI.sh").run()
-             rssi = com.output.replace('agrCtlRSSI:', '')
-             label = 1;  #todo label generator
-             global id_
-             global samples
-
-             if(len(samples) < pa.bachsize):
-                id_ = id_ + 1
-                samples.append(Sample(int(id_), int(rssi), int(label)))
-                #debugobj()
-             else:
-                del samples[:]
-        except RuntimeError:
-            print "input batch overload!\n"
-
-
-if __name__ == '__main__':
-    debugobj()
+        com = Command("./shell/osxRSSI.sh").run()
+        rssi = com.output.replace('agrCtlRSSI:', '')
+        label = 1;  #todo label generator
+        global id_
+        id_ = id_ + 1
+        #print(id_)
+        #print (len(samples))
+        return Sample(int(id_), int(rssi), int(label))
